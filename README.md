@@ -1,4 +1,4 @@
-# AcTUALIZA EL REQUIREMENTS 
+# ACTUALIZA EL REQUIREMENTS 
 librerias instaldas:
     numpy
     pandas
