@@ -17,14 +17,14 @@ set V_OLD=./v_old.exe
 set V_UPDATED=./v_up.exe
 
 REM TCC variables
-set tcc_url=
+set tcc_url=https://github.com/vlang/tccbin
 set tcc_dir=thirdparty/tcc
 set tcc_exe=thirdparty/tcc/tcc.exe
 if "%PROCESSOR_ARCHITECTURE%" == "x86" ( set tcc_branch="thirdparty-windows-i386" ) else ( set tcc_branch="thirdparty-windows-amd64" )
 if "%~1" == "-tcc32" set tcc_branch="thirdparty-windows-i386"
 
 REM VC settings
-set vc_url=
+set vc_url=https://github.com/vlang/vc
 set vc_dir=%~dp0vc
 
 REM Let a particular environment specify their own TCC and VC repos (to help mirrors)
@@ -248,7 +248,7 @@ goto :error
 :error
 echo.
 echo Exiting from error
-echo ERROR
+echo ERROR: please follow the instructions in https://github.com/vlang/v/wiki/Installing-a-C-compiler-on-Windows
 exit /b 1
 
 :success
@@ -260,7 +260,7 @@ echo  ^> To add V to your PATH, run `%V_EXE% symlink`.
 echo.
 echo | set /p="V version: "
 "%V_EXE%" version
-"%V_EXE%" 
+"%V_EXE%" run .github/problem-matchers/register_all.vsh
 goto :eof
 
 :usage
@@ -338,6 +338,8 @@ exit /b 0
 echo Bootstrapping TCC...
 echo  ^> TCC not found
 if "!tcc_branch!" == "thirdparty-windows-i386" ( echo  ^> Downloading TCC32 from !tcc_url! , branch !tcc_branch! ) else ( echo  ^> Downloading TCC64 from !tcc_url! , branch !tcc_branch! )
+git clone --filter=blob:none --quiet --branch !tcc_branch! !tcc_url! "%tcc_dir%"
+git --no-pager -C "%tcc_dir%" log -n3
 exit /b 0
 
 :cloning_vc
